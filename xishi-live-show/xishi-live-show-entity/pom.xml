@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <groupId>com.xishi</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <modelVersion>4.0.0</modelVersion>
+        <artifactId>xishi-live-show-entity</artifactId>
+        <properties>
+                <java.version>1.8</java.version>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        </properties>
+
+        <dependencies>
+                <dependency>
+                        <groupId>com.common</groupId>
+                        <artifactId>common-base</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                        <scope>provided</scope>
+                </dependency>
+                <dependency>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-annotations</artifactId>
+                        <version>1.5.13</version>
+                        <scope>provided</scope>
+                </dependency>
+
+                <!-- 本地项目jar  -->
+                <dependency>
+                        <groupId>com.xishi</groupId>
+                        <artifactId>xishi-user-entity</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                        <scope>compile</scope>
+                </dependency>
+                <dependency>
+                        <groupId>com.xishi</groupId>
+                        <artifactId>xishi-movie-entity</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                        <scope>compile</scope>
+                </dependency>
+        </dependencies>
+
+        <distributionManagement>
+                <repository>
+                        <id>releases</id>
+                        <name>NexusReleases</name>
+                        <url>http://47.104.148.185:8001/repository/maven-releases/</url>
+                </repository>
+
+                <snapshotRepository>
+                        <id>snapshots</id>
+                        <name>snapshots</name>
+                        <url>http://47.104.148.185:8001/repository/maven-snapshots/</url>
+                </snapshotRepository>
+        </distributionManagement>
+
+
+</project>

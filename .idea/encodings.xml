@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/xishi-basic/xishi-basic-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-basic/xishi-basic-entity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-basic/xishi-basic-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-basic/xishi-basic-rest/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-eureka/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-entity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-rest/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-movie/xishi-movie-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-movie/xishi-movie-entity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-movie/xishi-movie-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-movie/xishi-movie-rest/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-plat/xishi-plat-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-plat/xishi-plat-entity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-plat/xishi-plat-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-plat/xishi-plat-rest/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-socket/xishi-socket-entitiy" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-socket/xishi-socket-entitiy/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-socket/xishi-socket-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-socket/xishi-socket-rest/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-user/xishi-user-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-user/xishi-user-entity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-user/xishi-user-rest/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xishi-user/xishi-user-rest/src/main/resources" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

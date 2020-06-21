@@ -1,0 +1,23 @@
+server:
+    port: 10100
+spring:
+  jmx:
+    default-domain: xishi-eureka
+  application:
+    name: xishi-eureka
+  security:
+    user:
+      name: xishi
+      password: xishiEurekaServer6688233
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@172.17.57.12:${server.port}/eureka
+#      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@172.17.57.11:${server.port}/eureka
+  instance:
+    prefer-ip-address: true
+  server:
+    enable-self-preservation: true       #开启自我保存模式
+    eviction-interval-timer-in-ms: 30000  #续期时间,即扫描失效服务的间隔时间 30秒

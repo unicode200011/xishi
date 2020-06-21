@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.liveShow.dao.mapper.LiveMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.liveShow.model.pojo.Live">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="room_num" property="roomNum" />
+        <result column="stream_name" property="streamName" />
+        <result column="push_url" property="pushUrl" />
+        <result column="pull_url" property="pullUrl" />
+        <result column="total_live_time" property="totalLiveTime" />
+        <result column="total_live_watch" property="totalLiveWatch" />
+        <result column="live_start_time" property="liveStartTime" />
+        <result column="new_live_record" property="newLiveRecord" />
+        <result column="state" property="state" />
+        <result column="live_state" property="liveState" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, room_num, stream_name, push_url, pull_url, total_live_time, total_live_watch, live_start_time, new_live_record, state, live_state, update_time, create_time
+    </sql>
+    <sql id="liveList">
+        lr.cover,
+        ll.id,
+        lr.`name`,
+        lr.live_mode as liveMode,
+        lr.live_price as livePrice,
+        lr.live_pwd as livePwd,
+        ll.stream_name as streamName,
+        lr.live_watch_now as liveWatchNow,
+        IF(ll.live_state=0,1,0) as state,
+        u.`name` as showerName,
+        ll.id as liveId
+    </sql>
+
+    <select id="getLiveList" resultType="com.xishi.liveShow.entity.vo.LiveListVo">
+    SELECT
+        <include refid="liveList" />
+        FROM eb_live ll
+        LEFT JOIN eb_live_record lr on lr.id = ll.new_live_record
+        LEFT JOIN eb_user u on u.id = ll.user_id
+        where ll.new_live_record is not null and ll.user_id != #{data.userId} and ll.state in (0, 2)
+        <if test="data.type == 0 and data.sourceType == 1">
+            and lr.live_mode in (2,3) order by ll.create_time DESC,lr.live_watch_total DESC
+        </if>
+        <if test="data.type == 1">
+           and ll.user_id in (select link_id from eb_attention where user_id =#{data.userId})
+        </if>
+        <if test="data.type == 2">
+            ORDER BY ll.create_time DESC
+        </if>
+        <if test="data.type != 2 and data.sourceType != 1">
+            ORDER BY ll.live_state desc,lr.live_watch_now DESC,lr.live_watch_total DESC,ll.create_time DESC
+        </if>
+    </select>
+    <select id="getSortUserList" resultType="com.xishi.liveShow.entity.vo.SortUserVo">
+        select
+        u.id as userId,
+        u.`name`,
+        u.avatar,
+        u.gender,
+        (select count(1) from eb_attention where user_id=#{data.userId} and link_id = u.id ) as attention,
+        COALESCE (SUM(uw.amount), 0) AS amount
+        from eb_user_wallet_record uw
+        LEFT JOIN
+            eb_user u on u.id = uw.user_id
+        WHERE 1=1
+        <if test="data.type == 0">
+            AND uw.use_type = 0
+            and uw.type in (2,3,4,5)
+        </if>
+        <if test="data.type == 1">
+            AND uw.use_type = 1
+            and uw.type in (1,3,4,5)
+        </if>
+        <if test="data.sourceType == 0">
+            AND
+            DATE_FORMAT(uw.create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        </if>
+        <if test="data.sourceType == 1">
+            AND
+            YEARWEEK(uw.create_time + 1) = YEARWEEK(NOW() + 1)
+        </if>
+        <if test="data.sourceType == 2">
+            AND
+            DATE_FORMAT(uw.create_time,'%Y-%m') = DATE_FORMAT(NOW(),'%Y-%m')
+        </if>
+        GROUP BY uw.user_id
+        order by amount desc
+
+    </select>
+    <select id="getSortLiveList" resultType="com.xishi.liveShow.entity.vo.LiveListVo">
+        SELECT
+        <include refid="liveList" />
+        FROM eb_live ll
+        LEFT JOIN eb_live_record lr on lr.id = ll.new_live_record
+        LEFT JOIN eb_user u on u.id = ll.user_id
+        where ll.state in (0, 2)
+        <if test="userIds != null and userIds.size > 0">
+            and ll.user_id in
+            <foreach collection="userIds" open="(" item="id" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+
+        limit 100
+    </select>
+    <select id="searchLive" resultType="com.xishi.liveShow.entity.vo.LiveListVo">
+        SELECT
+        <include refid="liveList" />
+        FROM eb_live ll
+        LEFT JOIN eb_live_record lr on lr.id = ll.new_live_record
+        LEFT JOIN eb_user u on u.id = ll.user_id
+        where 1=1
+        <if test="keyword != ''">
+            AND
+            lr.name like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+    <select id="getLiveData" resultType="com.xishi.liveShow.entity.vo.LiveEndDataReq">
+        select
+           (select coalesce(sum(uw.amount),0) from eb_user_wallet_record uw where uw.live_record_id =#{id} and uw.type in (1,2,3,4) and uw.use_type = 1 ) as amount,
+           (SELECT COUNT(1) FROM ( select uw.user_id from eb_user_wallet_record uw where uw.live_record_id = #{id} and uw.type = 1 and uw.use_type = 1 GROUP BY uw.user_id) as t ) as giveUserNum
+
+    </select>
+</mapper>

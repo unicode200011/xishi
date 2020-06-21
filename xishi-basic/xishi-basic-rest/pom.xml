@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.xishi</groupId>
+    <artifactId>xishi-basic-rest</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>xishi-basic-rest</name>
+
+    <parent>
+        <groupId>com.cloud</groupId>
+        <artifactId>cloud-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <ons.version>1.8.0.Final</ons.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xishi</groupId>
+            <artifactId>xishi-basic-entity</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloud</groupId>
+            <artifactId>cloud-webcore</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.component.sms</groupId>
+            <artifactId>component-sms-yuntongxun-starter</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.component.cos</groupId>
+            <artifactId>component-cos-starter</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>xishiBasic</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

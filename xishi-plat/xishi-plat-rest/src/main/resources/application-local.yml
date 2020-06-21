@@ -1,0 +1,108 @@
+server:
+  port: 10103
+
+eureka:
+  client:
+    serviceUrl:
+#      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka,http://xishi:xishiEurekaServer6688233@172.17.57.12:10100/eureka
+#      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka
+      defaultZone: http://localhost:10100/eureka/
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: xishi-plat
+  datasource:
+    url: jdbc:mysql://161.117.181.2:3306/xishi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: root
+    password: Xishi@123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 161.117.181.2
+    port: 6379
+    password: 123456
+    database: 4
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+
+## swagger开关
+project:
+  swagger-open: true
+
+## 分布式锁 ##
+redisson:
+  address: redis://161.117.181.2:6379
+  password: 123456
+  database: 2
+
+mybatis-plus:
+  typeAliasesPackage: com.cdnhxx.xishi.plat.rest.model,com.cdnhxx.xishi.plat.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.cdnhxx.xishi.plat.rest.dao: debug
+  path: /home/project/java/xishi/logs/
+  file: xishiPlat.log
+
+#tcc事务
+org:
+  dromara:
+    hmily:
+      serializer: kryo
+      recoverDelayTime: 128
+      retryMax: 30
+      scheduledDelay: 128
+      scheduledThreadMax:  10
+      repositorySupport: db
+      started: true
+      hmilyDbConfig:
+        driverClassName: com.mysql.jdbc.Driver
+        url:  jdbc:mysql://172.17.57.12:3306/hmily_tcc?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: admin
+        password: 123456
+
+##应用自身业务配置
+application:
+  userService: xishi-user
+
+# 阿里云OSS
+oss:
+  endpoint: http://oss-cn-zhangjiakou.aliyuncs.com
+  bucket-name: xishilive
+  access-key-id: LTAI4G3aHTGagqMtkXsZL4Ec
+  access-key-secret: yn7V3HaeRCQ8YiGXmmL9Jfs2cIqNKC
+  request-url: http://xishilive.oss-accelerate.aliyuncs.com
+  disk-name-prefix: resources/

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserAuthInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.UserAuthInfo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="name" property="name" />
+        <result column="id_card" property="idCard" />
+        <result column="state" property="state" />
+        <result column="biz_no" property="bizNo" />
+        <result column="reason" property="reason" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="has_pay" property="hasPay" />
+        <result column="auth_time" property="authTime" />
+        <result column="card_front" property="cardFront" />
+        <result column="card_back" property="cardBack" />
+        <result column="card_hand" property="cardHand" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, name, id_card, state, biz_no, reason, create_time, update_time, has_pay, auth_time, card_front, card_back, card_hand
+    </sql>
+
+</mapper>

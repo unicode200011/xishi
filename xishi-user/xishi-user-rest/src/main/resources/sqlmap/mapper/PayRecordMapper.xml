@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.PayRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.PayRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="trade_no" property="tradeNo"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="money" property="money"/>
+        <result column="state" property="state"/>
+        <result column="type" property="type"/>
+        <result column="reason" property="reason"/>
+        <result column="notify_url" property="notifyUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, title, trade_no, order_no, money, state,type, reason, notify_url, create_time, update_time
+    </sql>
+
+</mapper>

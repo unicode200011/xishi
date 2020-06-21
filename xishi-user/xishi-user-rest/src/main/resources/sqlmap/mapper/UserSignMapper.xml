@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserSignMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.UserSign">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="sign_date" property="signDate" />
+        <result column="continuous_day" property="continuousDay" />
+        <result column="nq" property="nq" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, sign_date, continuous_day, nq, create_time
+    </sql>
+
+    <select id="userSign" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"></include> from `eb_user_sign`  WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) &lt;= DATE(sign_date) AND user_id = #{userId} ORDER BY sign_date DESC
+    </select>
+
+</mapper>

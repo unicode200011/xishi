@@ -1,0 +1,171 @@
+server:
+  port: 10104
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      #      defaultZone: ${eureka.defaultZone}
+      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka,http://xishi:xishiEurekaServer6688233@172.17.57.12:10100/eureka
+     # defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  application:
+    name: xishi-user
+  datasource:
+    url: jdbc:mysql://172.17.57.12:3306/xishi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: remote
+    password: 202005050213KkXx@$%..MYSQL..//
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    #host: 162.219.38.76
+    host: 172.17.57.12
+    port: 6379
+    password: xishi!@#redispwd
+    database: 4
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+  rabbitmq:
+    #    host: 106.12.154.67
+    #    port: 5672
+    #    username: admin
+    #    password: 123456
+    host: 172.17.57.12
+    port: 5672
+    username: admin
+    password: xishiadminrabbitmq
+    listener:
+      simple:
+        prefetch: 10
+        concurrency: 2
+        acknowledge-mode: none
+
+## swagger开关
+project:
+  swagger-open: true
+
+##sms短信
+sms:
+  url: http://opoutox.gosafepp.com/api/${sms.MerCode}/sms/send
+  MerCode: nnxsqkjgs
+  MsgType: 1
+  Content: "您的西施直播短信验证码是CODE,十分钟内有效,请勿告诉他人！"
+  KeyB: d4rzo2MXgx
+  desKey: uWERwS2i
+  Telephone:
+  Timestamp:
+pay:
+  env: true
+  baseUrl: http://opoutox.gosafepp.com/api/${sms.MerCode}/coin
+  MerCode: ${sms.MerCode}
+  KeyB: qrEZmSKvE1
+  desKey: ${sms.desKey}
+  CoinCode: DC
+
+##cos
+cos:
+  appId: 1259232367
+  secretId: AKIDdCXBcKtmCMHtIZFwHQJwKK6cx23RuKvL
+  secretKey: OclgUKbiqrsH0DnFRelbCXO0bvMzeCnA
+  region: ap-chengdu
+  bucket: xishi-test-1259232367
+
+## 分布式锁 ##
+redisson:
+  address: redis://172.17.57.12:6379
+  password: xishi!@#redispwd
+  database: 4
+
+mybatis-plus:
+  typeAliasesPackage: com.xishi.user.model,com.xishi.user.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.xishi.user.dao: debug
+  path: /home/project/java/xishi/logs/
+  file: xishiUser.log
+
+#tcc事务
+org:
+  dromara:
+    hmily:
+      serializer: kryo
+      recoverDelayTime: 128
+      retryMax: 30
+      scheduledDelay: 128
+      scheduledThreadMax:  10
+      repositorySupport: db
+      started: true
+      hmilyDbConfig:
+        driverClassName: com.mysql.jdbc.Driver
+        url:  jdbc:mysql://172.17.57.12:3306/hmily_tcc?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: admin
+        password: nahan123456
+
+##阿里云消息队列
+aliyun:
+  rocketmq:
+    accessKey: LTAIVsw5dzyog46x
+    secretKey: vUiErWOIzERjEa1BHGeVhGg1Wv9QXA
+    onsAddr: http://MQ_INST_1173862136935642_BbIMyjAk.mq-internet-access.mq-internet.aliyuncs.com:80
+
+##支付宝
+alipay:
+  #  appId: 2019101968496170
+  appId: 2019101968478293
+  pid: 2088631587760452
+  privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCWva3UH4CzZ6VEkiJVJPP6AAa2BbOYVhJ0UjmTIGA1MzM1I2GG04J4+/0TJE21vsScg4l97C43/MIGFFANv1Ovlsb2wQRhHQe+V2ZJASfW79ASz3PBUGRlDycuqEOfubIHIY/OalywdK3WRLHKq6k0N2WLyEK/khzwPndTQrFh9cuKGqIXd1Q5z4LKHHN1P5GbhWtG1H+D15TfGyxLPzAyx8kVtCeDuJyfHeUKFXvbR/Y8PgUBjOUi+Mk9UXp2vXavKI/d1WL40VAbUXxiELfqn5q9PX4hatAiMNuvpgcEBy1bhHXPambsUE9CZw5d4VLZ1OEYVLPa5UaYThhsstwfAgMBAAECggEAbzPQt6rhy/fLEPHpR/yxy50XVlKQcfIVPSCnfqUktDpoLWxDdy4zk0L6KJPgjBIGgxv6Yx3H3t+k1s1HXUzm1KMbdk9gBrBe1Qku2O50UHirfCT0VQkUdwUdt6rD8GISNnaI2xLV/Aqnb2lP656FfZLcY6lBrIeCt6ytZIvPxd5i5rikQUGZNfc5HLK10YROmostZtvUOIftDm3c7Y0ln+XzX9dWPV19BqJs9UQNFEAsoQXkzJynVgqna7VXtujjHNjytQkR/Fu26/1wJALczlZz6yZYmkMFpqkdSuOQQSLoLKCXBHLnYb0tNqMLlHUmwCHhMXxUmUfGqzB4zD0/AQKBgQDojYEe4Xzt6xme+/uDsgm/IofsS2ywyyjjcAtmS70M4Sh8VWaCSIAS6qi0xfukPxtePjdWd7U5zcxiUpqjOXJ+XIJCnCuhZP9/fU5jFEGV7qHVZYYHw7lSiu1XmKIhE1dbvWRyFHxRaUX5/hH/W382KYg22DXbOYaA/VnCwPDtnwKBgQCl8IC8syYQw0tywZXq376f4mvUUSRM6UeVrjoMGNxVPuP/FEIHFIlgHJJwybNOlUHsPwPMA2odZ9q9Ptk9kf/8k4DMnPzzsrkeBvamRDmcqhYFVz0bBeiaGz6Eh4UfjU2VVKWW6UyaBcL/k/qmVCahsZJ+lz9yidj7Zd7qjbKBgQKBgEhQMDWFEo79C0OHwacrBqLbvv54Wb0D/5vxrGnL5WaK4UcAW1bp6oF3XKyR3/Ur9nuwxw5pPP5Tg1mTrChTZcnrREooO9z9BgID2gsvMlHIGaS85BeoAgmrz6/sc4XreL+7Pe/HdPzvymW5XqlUL1ONSKEdTGn2EmAr5+yKiKCrAoGAJg+b96w/tuiUjaXJdS4M0y9j/DcAVIPNX4+u0MeDAiqCsSc8XdNgDyN+k1AwSH4DuORbQpgl5sjDa1TXD0BFrvFGQahgfKUpwLFoMYrEjCKXGnKAGYqpZ2+IT22mIy6N9QqNUKgCYfGgYG7Ytv3mPoA0UcTvUJ49nqwnDTWjFAECgYBOI7a/hM0IGAGh9xdoVeUobgdE/y2dQM/nJL3KyHfw8XkHl1tg49oDHX+N1wU2OPwf1NFuNL/7AkLzp3MbTScoyOlHEVLkSSzxVVgw5ANtMbhzzoZH8M3YeUIb9NsYBKYkEr7gtcn7jDzvUmZaj2Z39AP77iKxtta95V9stXe4ow==
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArKKfzk8idn/QiIq21kIdwCubLjjl/uUILGPrT2pQC5WhZ0BS3wV2scCwMHWe7PlpAnDMVmaLJp5ZrtBi7Dx88KOYR+UbTPQQf6gkaocDLWvDSi2QhwkKM2aMbn7nRiOJDMZGNAz7oAncyhAvKFQFBz3Ug3d1uyPuBeiH8J+EHq5zpKAS4RFrkzEz1vhqK3QbjWo5hU41chs5g/MnGDl6kQRniSXbwVRfsG7G/+IqHTDFrlrWJ7g1yaknq5Qku0iGSEEr2CVgeqctWSGmCZuJcIwBFEVnAAc6qaY1PPBJ4PE6a9kekWxYbGCL7XyNx/aH0TcqRctq4PnbGgNfTOB2WQIDAQAB
+  notifyUrl: http://47.104.148.185:81/users/pay/callback/aliPayCallback
+  signType: RSA2
+  charset: UTF-8
+  requestUrl: https://openapi.alipay.com/gateway.do
+  queryUrl: alipay.trade.query
+  identifyCallbackUrl: seeme://aaa
+
+#### 微信支付 ####
+wx:
+  appId: wxa638ca5b5af33bdf
+  mchId: 1559421701
+  apiKey: 733fe3f4f0b39169018a62632d09e0f0
+  signType: MD5
+  charset: UTF-8
+  notifyUrl: http://47.104.148.185:81/users/pay/callback/wxPayCallback
+  requestUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+
+##应用自身业务配置
+application:
+  inviteRegUrl: http://47.104.148.185:81/invite?code=

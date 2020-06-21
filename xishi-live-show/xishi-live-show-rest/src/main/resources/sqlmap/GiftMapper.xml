@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.liveShow.dao.mapper.GiftMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.liveShow.model.pojo.Gift">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="money" property="money" />
+        <result column="create_time" property="createTime" />
+        <result column="image" property="image" />
+        <result column="type" property="type" />
+        <result column="animation" property="animation" />
+        <result column="num" property="num" />
+        <result column="state" property="state" />
+        <result column="use_count" property="useCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, money, create_time, image, type, animation, num, state, use_count
+    </sql>
+    <update id="addUseCount">
+        update eb_gift set use_count = use_count + 1  where id = #{id}
+    </update>
+
+</mapper>

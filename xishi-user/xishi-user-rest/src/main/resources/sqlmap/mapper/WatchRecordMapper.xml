@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.WatchRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.WatchRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="live_record_id" property="liveRecordId" />
+        <result column="create_time" property="createTime" />
+        <result column="endTime" property="endTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, live_record_id, create_time, endTime
+    </sql>
+    <select id="getLiveGiftRanking" resultType="com.xishi.user.entity.vo.LiveGiftRankingVo">
+
+     select
+    u.id as userId,
+    u.avatar
+    from
+    eb_watch_record l
+    left join eb_user u on u.id =  l.user_id
+    where l.live_record_id = #{data} and l.state = 0
+    group by l.user_id
+    order by l.create_time desc
+
+        limit #{size}
+    </select>
+
+</mapper>

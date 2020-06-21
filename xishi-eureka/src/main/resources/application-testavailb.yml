@@ -1,0 +1,16 @@
+server:
+    port: 10100
+spring:
+    jmx:
+      default-domain: xishi-eureka
+    application:
+      name: xishi-eureka
+eureka:
+    client:
+      register-with-eureka: true
+      fetch-registry: true
+      serviceUrl:
+        defaultZone: http::${server.port}/eureka
+    instance:
+      prefer-ip-address: true
+# 这里的defaultZone值是另一个注册中心的地址，2个注册中心相互注册

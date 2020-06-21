@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="xishi-live-show-entity" />
+        <module name="xishi-movie-rest" />
+        <module name="xishi-socket-rest" />
+        <module name="xishi-plat-rest" />
+        <module name="xishi-live-show-rest" />
+        <module name="xishi-socket-entitiy" />
+        <module name="xishi-basic-entity" />
+        <module name="xishi-generator" />
+        <module name="xishi-eureka" />
+        <module name="xishi-user-rest" />
+        <module name="xishi-movie-entity" />
+        <module name="xishi-basic-rest" />
+        <module name="xishi-plat-entity" />
+        <module name="xishi-user-entity" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.8">
+      <module name="xishi" target="1.5" />
+      <module name="xishi-basic" target="1.5" />
+      <module name="xishi-basic-entity" target="1.8" />
+      <module name="xishi-basic-rest" target="1.8" />
+      <module name="xishi-eureka" target="1.8" />
+      <module name="xishi-generator" target="1.8" />
+      <module name="xishi-live-show" target="1.5" />
+      <module name="xishi-live-show-entity" target="1.8" />
+      <module name="xishi-live-show-rest" target="1.8" />
+      <module name="xishi-movie" target="1.5" />
+      <module name="xishi-movie-entity" target="1.8" />
+      <module name="xishi-movie-rest" target="1.8" />
+      <module name="xishi-plat" target="1.5" />
+      <module name="xishi-plat-entity" target="1.8" />
+      <module name="xishi-plat-rest" target="1.8" />
+      <module name="xishi-socket" target="1.5" />
+      <module name="xishi-socket-entitiy" target="1.8" />
+      <module name="xishi-socket-rest" target="1.8" />
+      <module name="xishi-user" target="1.5" />
+      <module name="xishi-user-entity" target="1.8" />
+      <module name="xishi-user-rest" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

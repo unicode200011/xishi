@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.BankUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.BankUser">
+        <id column="id" property="id" />
+        <result column="bank_account_id" property="bankAccountId" />
+        <result column="user_id" property="userId" />
+        <result column="bank_card" property="bankCard" />
+        <result column="qrcode" property="qrcode" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bank_account_id, user_id, bank_card, qrcode, create_time
+    </sql>
+
+</mapper>

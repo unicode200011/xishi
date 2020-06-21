@@ -1,0 +1,85 @@
+server:
+  port: 10105
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      #      defaultZone: ${eureka.defaultZone}
+      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka,http://xishi:xishiEurekaServer6688233@172.17.57.12:10100/eureka
+#      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: xishi-movie
+  datasource:
+    url: jdbc:mysql://172.17.57.12:3306/xishi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: remote
+    password: 202005050213KkXx@$%..MYSQL..//
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 162.219.38.76
+    #host: 172.17.57.12
+    port: 6379
+    password: xishi!@#redispwd
+    database: 4
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+
+## swagger开关
+project:
+  swagger-open: true
+
+## 分布式锁 ##
+redisson:
+  address: redis://172.17.57.12:6379
+  password: xishi!@#redispwd
+  database: 1
+
+mybatis-plus:
+  typeAliasesPackage: com.xishi.movie.model,com.xishi.movie.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.xishi.movie.dao: debug
+  path: /home/project/java/xishi/logs/
+  file: xishiMovie.log
+
+##应用自身业务配置
+application:
+  userService: xishi-user

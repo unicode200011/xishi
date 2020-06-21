@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <groupId>com.xishi</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <modelVersion>4.0.0</modelVersion>
+        <artifactId>xishi-live-show</artifactId>
+        <packaging>pom</packaging>
+        <name>xishi-live_show</name>
+
+    <modules>
+        <module>xishi-live-show-rest</module>
+        <module>xishi-live-show-entity</module>
+    </modules>
+
+
+</project>

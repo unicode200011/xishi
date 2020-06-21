@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.ChargeListMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.ChargeList">
+        <id column="id" property="id" />
+        <result column="xishi_num" property="xishiNum" />
+        <result column="rmb" property="rmb" />
+        <result column="create_time" property="createTime" />
+        <result column="rate" property="rate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, xishi_num, rmb, create_time, rate
+    </sql>
+    <select id="findCommon" resultType="java.lang.String">
+        select c.value from eb_common_data c where id=14
+    </select>
+
+</mapper>

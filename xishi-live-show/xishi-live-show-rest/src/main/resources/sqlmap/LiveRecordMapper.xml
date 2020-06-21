@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.liveShow.dao.mapper.LiveRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.liveShow.model.pojo.LiveRecord">
+        <id column="id" property="id" />
+        <result column="live_id" property="liveId" />
+        <result column="cover" property="cover" />
+        <result column="name" property="name" />
+        <result column="live_watch_now" property="liveWatchNow" />
+        <result column="live_watch_total" property="liveWatchTotal" />
+        <result column="shower_name" property="showerName" />
+        <result column="show_time" property="showTime" />
+        <result column="amount" property="amount" />
+        <result column="state" property="state" />
+        <result column="live_mode" property="liveMode" />
+        <result column="live_price" property="livePrice" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, live_id, cover, name, live_watch_now, live_watch_total, shower_name, show_time, amount, state, live_mode, live_price
+    </sql>
+    <update id="changeLiveWatchNum">
+        update eb_live_record set live_watch_now = #{data.count} where id = #{data.id}
+    </update>
+    <update id="changeLivePlayNum">
+        update eb_live_record set live_watch_total = live_watch_total + 1 where id = #{data.id}
+    </update>
+
+</mapper>

@@ -1,0 +1,116 @@
+server:
+  port: 10108
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      #      defaultZone: ${eureka.defaultZone}
+      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka,http://xishi:xishiEurekaServer6688233@172.17.57.12:10100/eureka
+#      defaultZone: http://xishi:xishiEurekaServer6688233@172.17.57.11:10100/eureka
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: xishi-socket
+  datasource:
+    url: jdbc:mysql://172.17.57.12:3306/xishi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: remote
+    password: 202005050213KkXx@$%..MYSQL..//
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 172.17.57.12
+    port: 6379
+    password: xishi!@#redispwd
+    database: 4
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+  rabbitmq:
+    #    host: 106.12.154.67
+    #    port: 5672
+    #    username: admin
+    #    password: 123456
+    host: 172.17.57.12
+    port: 5672
+    username: admin
+    password: xishiadminrabbitmq
+    listener:
+      simple:
+        prefetch: 10
+        concurrency: 2
+        acknowledge-mode: none
+
+## swagger开关
+project:
+  swagger-open: true
+
+## 分布式锁 ##
+redisson:
+  address: redis://172.17.57.12:6379
+  password: xishi!@#redispwd
+  database: 1
+
+mybatis-plus:
+  typeAliasesPackage: com.xishi.user.model,com.xishi.user.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.xishi.user.dao: debug
+  path: /home/project/java/xishi/logs/
+  file: xishiSocket.log
+
+socketio:
+  host: 127.0.0.1
+  port: 10107
+  #设置最大每帧处理数据的长度，防止他人利用大数据来攻击服务器
+  maxFramePayloadLength: 1048576
+  #设置http交互最大内容长度
+  maxHttpContentLength: 1048576
+  # socket连接数大小（如只监听一个端口boss线程组为1即可）
+  bossCount: 1
+  workCount: 100
+  allowCustomRequests: true
+  # 协议升级超时时间（毫秒），默认10秒。HTTP握手升级为ws协议超时时间
+  upgradeTimeout: 1000000
+  # Ping消息超时时间（毫秒），默认60秒，这个时间间隔内没有接收到心跳消息就会发送超时事件
+  pingTimeout: 6000000
+  # Ping消息间隔（毫秒），默认25秒。客户端向服务器发送一条心跳消息间隔
+  pingInterval: 25000
+
+##应用自身业务配置
+application:
+  userService: xishi-user

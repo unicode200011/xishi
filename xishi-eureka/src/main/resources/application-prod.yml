@@ -1,0 +1,15 @@
+server:
+    port: 8190
+spring:
+    jmx:
+      default-domain: xishi-eureka
+    application:
+      name: xishi-eureka
+eureka:
+     instance:
+        hostname: 127.0.0.1
+     client:
+        register-with-eureka: false
+        fetch-registry: false
+        serviceUrl:
+          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

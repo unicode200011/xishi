@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.UserRelation">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="link_id" property="linkId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, link_id, create_time
+    </sql>
+    <insert id="insertRelationBoth">
+        INSERT INTO eb_user_relation(user_id,link_id,create_time) VALUE(#{userId},#{linkId},now());
+        INSERT INTO eb_user_relation(user_id,link_id,create_time) VALUE(#{linkId},#{userId},now());
+    </insert>
+    <delete id="deleteBoth">
+        DELETE FROM eb_user_relation WHERE user_id=#{userId} AND link_id=#{linkId};
+        DELETE FROM eb_user_relation WHERE user_id=#{linkId} AND link_id=#{userId};
+    </delete>
+
+</mapper>

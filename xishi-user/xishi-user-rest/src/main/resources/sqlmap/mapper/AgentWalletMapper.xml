@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.AgentWalletMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.AgentWallet">
+        <id column="id" property="id" />
+        <result column="gb_amount" property="gbAmount" />
+        <result column="total_gift_amount" property="totalGiftAmount" />
+        <result column="agent_id" property="agentId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, gb_amount, total_gift_amount, agent_id, create_time
+    </sql>
+    <update id="addGIftMoneyById">
+        update eb_agent_wallet set total_gift_amount = total_gift_amount + #{rateMoney}  where agent_id = #{belongAgent}
+    </update>
+
+    <update id="addMoneyById">
+        update eb_agent_wallet set gb_amount = gb_amount + #{rateMoney}  where agent_id = #{belongAgent}
+    </update>
+    <update id="subMoneyById">
+        update eb_agent_wallet set gb_amount = gb_amount - #{subMoney}  where agent_id = #{belongAgent}
+    </update>
+
+</mapper>

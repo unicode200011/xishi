@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserWalletBalanceRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.UserWalletBalanceRecord">
+        <id column="id" property="id" />
+        <result column="wallet_nj" property="walletNj" />
+        <result column="wallet_nq" property="walletNq" />
+        <result column="wallet_money" property="walletMoney" />
+        <result column="record_nj" property="recordNj" />
+        <result column="record_nq" property="recordNq" />
+        <result column="record_money" property="recordMoney" />
+        <result column="nj" property="nj" />
+        <result column="nq" property="nq" />
+        <result column="money" property="money" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, wallet_nj, wallet_nq, wallet_money, record_nj, record_nq, record_money, nj, nq, money, create_time, update_time
+    </sql>
+
+</mapper>

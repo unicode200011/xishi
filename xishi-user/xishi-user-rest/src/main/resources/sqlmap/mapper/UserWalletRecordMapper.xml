@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserWalletRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.UserWalletRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="amount" property="amount" />
+        <result column="use_type" property="useType" />
+        <result column="type" property="type" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="link_uid" property="linkUid" />
+        <result column="wallet_amount" property="walletAmount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, amount, use_type, type, remark, create_time, link_uid, wallet_amount
+    </sql>
+    <select id="getLiveGiftList" resultType="com.xishi.user.entity.vo.LiveGiftListVo">
+         select
+        u.avatar,
+        u.name,
+        u.id,
+        coalesce(sum(amount),0) as amount
+        from eb_user_wallet_record uw
+        left join eb_user u on u.id = uw.user_id
+        where uw.use_type = 1 and uw.type in (1,3,4) and uw.live_record_id = #{id}
+        group by uw.user_id
+        order by amount desc
+    </select>
+    <select id="getLiveGiftRanking" resultType="com.xishi.user.entity.vo.LiveGiftRankingVo">
+
+       select
+            u.id as userId,
+            coalesce(sum(amount),0) as amount,
+            u.avatar
+        from
+        eb_user_wallet_record l
+        left join eb_user u on u.id =  l.user_id
+        where l.live_record_id = #{id} and l.use_type = 1
+        group by l.user_id
+        order by amount desc
+        limit 3
+    </select>
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.User">
+        <id column="id" property="id"/>
+        <result column="phone" property="phone"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="name" property="name"/>
+        <result column="avatar" property="avatar"/>
+        <result column="city" property="city"/>
+        <result column="province" property="province"/>
+        <result column="gender" property="gender"/>
+        <result column="age" property="age"/>
+        <result column="intro" property="intro"/>
+        <result column="pay_pwd" property="payPwd"/>
+        <result column="state" property="state"/>
+        <result column="qq" property="qq"/>
+        <result column="wx" property="wx"/>
+        <result column="birthday" property="birthday"/>
+        <result column="authed" property="authed"/>
+        <result column="source" property="source"/>
+        <result column="machine" property="machine"/>
+        <result column="login_time" property="loginTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="inviter_id" property="inviterId"/>
+        <result column="freeze_end_time" property="freezeEndTime"/>
+        <result column="freeze_start_time" property="freezeStartTime"/>
+
+    </resultMap>
+
+    <resultMap id="UserInfoMap" type="com.xishi.user.entity.vo.UserInfoVo">
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="avatar" property="avatar"/>
+        <result column="city" property="city"/>
+        <result column="province" property="province"/>
+        <result column="intro" property="intro"/>
+        <result column="state" property="state"/>
+        <result column="authed" property="authed"/>
+        <result column="inviter_id" property="inviterId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        u.id, u.phone, u.password, u.salt,u.account_no, u.name, u.real_name, u.avatar, u.city, u.province, u.gender, u.age, u.intro,
+        u.pay_pwd, u.state, u.qq, u.wx, u.birthday, u.constellation, u.authed, u.vip, u.source, u.machine, u.nation_id,u.nation_name,
+        u.blood_type, u.video_time,u.login_time, u.create_time, u.update_time,u.height,u.weight,u.en_name,
+        u.grade,u.grade_name,u.wallet_address,u.inviter_id,u.inviter_account_no,u.freeze_end_time,u.freeze_start_time
+    </sql>
+    <update id="changePraiseNum">
+        update eb_user
+        set praise_num =
+        <if test="type == 1">
+            if(praise_num > 0,praise_num - 1,0)
+        </if>
+        <if test="type == 0">
+            praise_num + 1
+        </if>
+        where id = #{userId}
+    </update>
+    <update id="changeAttentionNum">
+        update eb_user
+        set attention_num =
+        <if test="type == 1">
+            if(attention_num > 0,attention_num - 1,0)
+        </if>
+        <if test="type == 0">
+            attention_num + 1
+        </if>
+        where id = #{userId}
+
+    </update>
+    <update id="changeFansNum">
+        update eb_user
+        set fans_num =
+        <if test="type == 1">
+            if(fans_num > 0,fans_num - 1,0)
+        </if>
+        <if test="type == 0">
+            fans_num + 1
+        </if>
+        where id = #{userId}
+    </update>
+
+    <select id="queryUserList" resultMap="UserInfoMap">
+        select id as user_id ,xishi_num, name, real_name, avatar,province,city,
+            intro,state,authed,inviter_id,inviter_account_no,grade,grade_name
+        from eb_user
+        where (xishi_num like CONCAT(#{keyword},"%") or name like CONCAT(#{keyword},"%") )
+        and state=0
+        limit #{start},#{rows}
+    </select>
+
+    <select id="selectByThirdAccount" resultMap="BaseResultMap">
+          select
+        <include refid="Base_Column_List"></include>
+          from eb_user u WHERE
+          <if test="type==0">
+              u.qq =#{account}
+          </if>
+        <if test="type==1">
+            u.wx =#{account}
+        </if>
+    </select>
+    <select id="selectLiveState" resultType="java.lang.Integer">
+        select live_state from eb_live where user_id = #{id}
+    </select>
+    <select id="selectLive" resultType="com.xishi.user.entity.vo.LiveVo">
+         select
+         ll.id as liveId,
+         lr.live_mode as liveMode,
+         lr.live_pwd as livePwd,
+         lr.live_price as livePrice,
+         ll.stream_name as streamName
+         from eb_live ll
+         left join eb_live_record lr on lr.id = ll.new_live_record
+         where ll.user_id = #{id}
+    </select>
+    <select id="getCommentLevel" resultType="java.lang.String">
+        select a.value from eb_common_data a where id=#{id}
+    </select>
+
+</mapper>

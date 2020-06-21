@@ -1,0 +1,93 @@
+server:
+  port: 8186
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+#      defaultZone: ${eureka.defaultZone}
+      defaultZone: http://127.0.0.1:8190/eureka
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  application:
+    name: xishi-basic
+  datasource:
+    url: jdbc:mysql://cd-cdb-1a3m23e2.sql.tencentcdb.com:62905/xishi_prod?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: remote
+    password: zxcvbnm123!
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 172.27.0.14
+    port: 6379
+    password: zxcvbnm123!
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+
+## swagger开关
+project:
+  swagger-open: true
+  redis-open: true
+
+##sms短信
+sms:
+  yuntongxun:
+    url: https://app.cloopen.com:8883
+    accountSid: 8aaf070867e885ce016a4e12d2b608e4
+    authToken: ef8464a077ab43f6865984f2a66a8e5b
+    appId: 8aaf070867e885ce016a4e12d2d608e5
+    connectTimeout: 5000
+    reqTimeout: 5000
+
+##cos
+cos:
+  appId: 1259232367
+  secretId: AKIDdCXBcKtmCMHtIZFwHQJwKK6cx23RuKvL
+  secretKey: OclgUKbiqrsH0DnFRelbCXO0bvMzeCnA
+  region: ap-chengdu
+  bucket: xishi-prod-1259232367
+
+## 分布式锁 ##
+redisson:
+  address: redis://172.27.0.14:6379
+  password: zxcvbnm123!
+
+mybatis-plus:
+  typeAliasesPackage: com.xishi.basic.model,com.xishi.basic.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.xishi.basic.dao: debug
+  path: /data/logs/prod/xishi-basic

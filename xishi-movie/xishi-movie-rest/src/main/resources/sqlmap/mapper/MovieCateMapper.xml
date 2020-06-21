@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.movie.dao.mapper.MovieCateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.movie.model.pojo.MovieCate">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="num" property="num" />
+        <result column="state" property="state" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="play_num" property="playNum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, num, state, create_time, update_time, play_num
+    </sql>
+
+</mapper>

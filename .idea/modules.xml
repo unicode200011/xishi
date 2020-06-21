@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/xishi.iml" filepath="$PROJECT_DIR$/xishi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-basic/xishi-basic.iml" filepath="$PROJECT_DIR$/xishi-basic/xishi-basic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-basic/xishi-basic-entity/xishi-basic-entity.iml" filepath="$PROJECT_DIR$/xishi-basic/xishi-basic-entity/xishi-basic-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-basic/xishi-basic-rest/xishi-basic-rest.iml" filepath="$PROJECT_DIR$/xishi-basic/xishi-basic-rest/xishi-basic-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-eureka/xishi-eureka.iml" filepath="$PROJECT_DIR$/xishi-eureka/xishi-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-generator/xishi-generator.iml" filepath="$PROJECT_DIR$/xishi-generator/xishi-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show.iml" filepath="$PROJECT_DIR$/xishi-live-show/xishi-live-show.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-entity/xishi-live-show-entity.iml" filepath="$PROJECT_DIR$/xishi-live-show/xishi-live-show-entity/xishi-live-show-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-live-show/xishi-live-show-rest/xishi-live-show-rest.iml" filepath="$PROJECT_DIR$/xishi-live-show/xishi-live-show-rest/xishi-live-show-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-movie/xishi-movie.iml" filepath="$PROJECT_DIR$/xishi-movie/xishi-movie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-movie/xishi-movie-entity/xishi-movie-entity.iml" filepath="$PROJECT_DIR$/xishi-movie/xishi-movie-entity/xishi-movie-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-movie/xishi-movie-rest/xishi-movie-rest.iml" filepath="$PROJECT_DIR$/xishi-movie/xishi-movie-rest/xishi-movie-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-plat/xishi-plat.iml" filepath="$PROJECT_DIR$/xishi-plat/xishi-plat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-plat/xishi-plat-entity/xishi-plat-entity.iml" filepath="$PROJECT_DIR$/xishi-plat/xishi-plat-entity/xishi-plat-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-plat/xishi-plat-rest/xishi-plat-rest.iml" filepath="$PROJECT_DIR$/xishi-plat/xishi-plat-rest/xishi-plat-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-socket/xishi-socket.iml" filepath="$PROJECT_DIR$/xishi-socket/xishi-socket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-socket/xishi-socket-entitiy/xishi-socket-entitiy.iml" filepath="$PROJECT_DIR$/xishi-socket/xishi-socket-entitiy/xishi-socket-entitiy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-socket/xishi-socket-rest/xishi-socket-rest.iml" filepath="$PROJECT_DIR$/xishi-socket/xishi-socket-rest/xishi-socket-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-user/xishi-user.iml" filepath="$PROJECT_DIR$/xishi-user/xishi-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-user/xishi-user-entity/xishi-user-entity.iml" filepath="$PROJECT_DIR$/xishi-user/xishi-user-entity/xishi-user-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xishi-user/xishi-user-rest/xishi-user-rest.iml" filepath="$PROJECT_DIR$/xishi-user/xishi-user-rest/xishi-user-rest.iml" />
+    </modules>
+  </component>
+</project>

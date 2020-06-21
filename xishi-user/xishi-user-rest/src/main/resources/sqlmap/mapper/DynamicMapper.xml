@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.DynamicMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.Dynamic">
+        <result column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="user_id" property="userId" />
+        <result column="images" property="images" />
+        <result column="create_time" property="createTime" />
+        <result column="comment_num" property="commentNum" />
+        <result column="praise_num" property="praiseNum" />
+        <result column="state" property="state" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, content, user_id, images, create_time, comment_num, praise_num, state
+    </sql>
+    <update id="changePraiseNum">
+        update eb_dynamic
+            set praise_num =
+            <if test="type == 1">
+                if(praise_num > 0,praise_num - 1,0)
+            </if>
+            <if test="type == 0">
+               praise_num + 1
+            </if>
+            where id = #{id}
+    </update>
+    <update id="changeCommentNum">
+        update eb_dynamic
+        set comment_num =
+        <if test="type == 1">
+            if(comment_num > 0,comment_num - 1,0)
+        </if>
+        <if test="type == 0">
+            comment_num + 1
+        </if>
+        where id = #{id}
+    </update>
+
+</mapper>

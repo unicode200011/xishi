@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.BankCardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.BankCard">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_logo" property="bankLogo"/>
+        <result column="card_num" property="cardNum"/>
+        <result column="card_type" property="cardType"/>
+        <result column="open_bank" property="openBank"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, user_name, bank_name, bank_logo, card_num, card_type, open_bank
+    </sql>
+    <!--银行卡列表-->
+    <select id="queryByUserId" resultMap="BaseResultMap">
+        SELECT id,user_id,user_name,bank_name,bank_logo,card_num,card_type,open_bank
+        FROM eb_bank_card
+        WHERE user_id = #{userId}
+        ORDER BY id ASC
+    </select>
+</mapper>

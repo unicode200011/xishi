@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.movie.dao.mapper.MovieMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.movie.model.pojo.Movie">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="source" property="source" />
+        <result column="cover" property="cover" />
+        <result column="create_time" property="createTime" />
+        <result column="play_num" property="playNum" />
+        <result column="price" property="price" />
+        <result column="url" property="url" />
+        <result column="cate_id" property="cateId" />
+        <result column="state" property="state" />
+        <result column="upload_user" property="uploadUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, source, cover, create_time, play_num, price, url, cate_id, state, upload_user, remark
+    </sql>
+    <update id="addMoviesPlayNum">
+        update eb_movie set play_num = play_num + 1 where id = #{data.id}
+    </update>
+    <update id="addMoviesWatchNum">
+        update eb_movie set watch_num = #{data.count} where id = #{data.id}
+    </update>
+
+</mapper>

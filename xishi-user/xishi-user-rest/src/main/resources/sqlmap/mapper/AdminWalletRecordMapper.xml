@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.AdminWalletRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.AdminWalletRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="shower_id" property="showerId" />
+        <result column="type" property="type" />
+        <result column="io" property="io" />
+        <result column="remark" property="remark" />
+        <result column="link_uid" property="linkUid" />
+        <result column="wallet_amount" property="walletAmount" />
+        <result column="cust_id" property="custId" />
+        <result column="cust_num" property="custNum" />
+        <result column="cust_name" property="custName" />
+        <result column="live_record_id" property="liveRecordId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, shower_id, type, io, remark, link_uid, wallet_amount, cust_id, cust_num, cust_name, live_record_id
+    </sql>
+
+</mapper>

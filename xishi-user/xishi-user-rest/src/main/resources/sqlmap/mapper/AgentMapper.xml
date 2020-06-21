@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xishi.user.dao.mapper.AgentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xishi.user.model.pojo.Agent">
+        <id column="id" property="id" />
+        <result column="agent_num" property="agentNum" />
+        <result column="agent_phone" property="agentPhone" />
+        <result column="audit_state" property="auditState" />
+        <result column="audit_time" property="auditTime" />
+        <result column="reason" property="reason" />
+        <result column="state" property="state" />
+        <result column="permission" property="permission" />
+        <result column="user_id" property="userId" />
+        <result column="agent_user_name" property="agentUserName" />
+        <result column="agent_name" property="agentName" />
+        <result column="card" property="card" />
+        <result column="agent_logo" property="agentLogo" />
+        <result column="agent_intro" property="agentIntro" />
+        <result column="card_front" property="cardFront" />
+        <result column="card_back" property="cardBack" />
+        <result column="create_time" property="createTime" />
+        <result column="real_name" property="realName" />
+        <result column="admin_rate" property="adminRate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, agent_num, agent_phone, audit_state, audit_time, reason, state, permission, user_id, agent_user_name, agent_name, card, agent_logo, agent_intro, card_front, card_back, create_time, real_name,admin_rate
+    </sql>
+
+</mapper>

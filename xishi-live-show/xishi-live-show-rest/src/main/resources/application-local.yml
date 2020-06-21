@@ -1,0 +1,99 @@
+server:
+  port: 10106
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:10100/eureka/
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+
+#负载均衡
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+###################  spring配置  ###################
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: xishi-liveShow
+  datasource:
+    url: jdbc:mysql://161.117.181.2:3306/xishi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    username: root
+    password: Xishi@123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 161.117.181.2
+    port: 6379
+    password: 123456
+    database: 4
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+  rabbitmq:
+    host: 161.117.181.2
+    port: 5672
+    username: root
+    password: root
+    listener:
+      simple:
+        prefetch: 10
+        concurrency: 2
+        acknowledge-mode: none
+## swagger开关
+project:
+  swagger-open: true
+
+## 分布式锁 ##
+redisson:
+  address: redis://161.117.181.2:6379
+  password: 123456
+  database: 4
+
+mybatis-plus:
+  typeAliasesPackage: com.xishi.liveShow.model,com.xishi.liveShow.entity
+  mapper-locations: classpath*:sqlmap/**/**.xml
+  global-config:
+    db-config:
+      id-type: 0
+      field-strategy: not_null
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      table-prefix: eb_
+  configuration:
+    map-underscore-to-camel-case: true
+
+################### pageHelper ###################
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level.root: info
+  level.com.xishi.liveShow.dao: debug
+  path: /home/project/java/xishi/logs/
+  file: xishiLiveShow.log
+live:
+  pullName: live.pnpmm.cn
+  #  pushName: rtmp://77184.livepush.myqcloud.com/live/STREAM_NAME?
+  pushName: rtmp://78911.livepush.myqcloud.com/live/STREAM_NAME?
+  #  pushKey: 9343cb7ccc0b90898631caa14f311690
+  pushKey: 97d4f9602f98dc67f2fdf2e7cda00379
+  pullKey: livePlayKey
+  overTime: 600
+
+##应用自身业务配置
+application:
+  userService: xishi-user
