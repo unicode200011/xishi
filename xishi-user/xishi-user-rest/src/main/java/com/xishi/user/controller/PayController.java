@@ -130,16 +130,19 @@ public class PayController {
      * @return
      */
     @PostMapping("/submitBeePayWay")
-    @ApiOperation("提交支付")
+    @ApiOperation("Bee提交支付")
     @NeedLogin
-    public String submitBeePayWay(@RequestBody Req<BBPaySubmitReq> req, HttpServletRequest request) {
+    public Resp<PayResponInfo> submitBeePayWay(@RequestBody Req<BBPaySubmitReq> req, HttpServletRequest request) {
         SessionUser userVo = LoginContext.getLoginUser();
         Long userId = userVo.getUserId();
         BBPaySubmitReq data = req.getData();
         data.setUserId(userId);
         String ipAddress = HttpUtils.getIpAddress(request);
         data.setIp(ipAddress);
-        return chargeListService.submitBeePayWay(data);
+        Resp<PayResponInfo> respBee = chargeListService.submitBeePayWay(data);
+        respBee.setMsg("这条信息来自于代码, beeAPI调用成功,BEE的详细返回地址在.getData().getMessage()");
+        System.out.println("beeAPI调用成功:"+respBee.getData().getMessage());
+        return respBee;
     }
 
 }

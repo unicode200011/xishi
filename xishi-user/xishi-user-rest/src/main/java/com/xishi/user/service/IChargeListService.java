@@ -27,6 +27,6 @@ public interface IChargeListService extends IService<ChargeList> {
 
     Resp<PayResponInfo> submitPayWay(BBPaySubmitReq data);
 
-    String submitBeePayWay(BBPaySubmitReq data);
+    Resp<PayResponInfo> submitBeePayWay(BBPaySubmitReq data);
 
 }

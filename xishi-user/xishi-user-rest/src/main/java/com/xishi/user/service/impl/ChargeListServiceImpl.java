@@ -164,11 +164,12 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
 
     /**
      * Bee支付
+     *
      * @param data
      * @return
      */
     @Override
-    public String submitBeePayWay(BBPaySubmitReq data) {
+    public Resp<PayResponInfo> submitBeePayWay(BBPaySubmitReq data) {
         Long userId = data.getUserId();
         User user = userService.getById(userId);
         int payWayId = data.getPayWayId();
@@ -280,7 +281,7 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
      * @param xishiNum
      * @return
      */
-    public String getPayBeeResponse(PayAndType payAndType, String ip, String orderNum, BigDecimal amount, String xishiNum) {
+    public Resp<PayResponInfo> getPayBeeResponse(PayAndType payAndType, String ip, String orderNum, BigDecimal amount, String xishiNum) {
 
         Integer typeId = payAndType.getTypeId();
         Integer payId = payAndType.getPayId();
@@ -325,8 +326,12 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         System.out.println("完整参数:" + postParam);
 
         String respon = HttpUtils.sendPost(pay.getCreateMusterUrl(), String.valueOf(postParam));
-        System.out.println("响应respon：" + respon);
-        return respon;
+
+        PayResponInfo payResponInfo = new PayResponInfo();
+        payResponInfo.setCode(200);
+        payResponInfo.setMessage(respon);
+        System.out.println("响应respon：" + payResponInfo.getMessage());
+        return Resp.successData(payResponInfo);
 
     }
 
@@ -379,6 +384,7 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
 
         String respon = HttpUtils.sendPost(masterUrl, String.valueOf(postParam));
         System.out.println("响应respon：" + respon);
+        PayResponInfo payResponInfo = new PayResponInfo();
         //   PayResponInfo payResponInfo = JSONObject.parseObject(respon, PayResponInfo.class);
         //    System.out.println("payResponInfo：" + JSONObject.toJSONString(payResponInfo));
     }
