@@ -380,13 +380,10 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         postParam.append("pay_productname=").append(pay_productname);
         System.out.println("完整参数:" + postParam);
 
-        //  String paramStr = DateUtils.getHttpGetParam(false, "", postParam);
 
         String respon = HttpUtils.sendPost(masterUrl, String.valueOf(postParam));
         System.out.println("响应respon：" + respon);
         PayResponInfo payResponInfo = new PayResponInfo();
-        //   PayResponInfo payResponInfo = JSONObject.parseObject(respon, PayResponInfo.class);
-        //    System.out.println("payResponInfo：" + JSONObject.toJSONString(payResponInfo));
     }
 
 

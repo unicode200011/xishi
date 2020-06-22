@@ -142,8 +142,6 @@ public class PayController {
         Resp<PayResponInfo> respBee = chargeListService.submitBeePayWay(data);
         respBee.setMsg("这条信息来自于代码, beeAPI调用成功,BEE的详细返回地址在.getData().getMessage()");
         System.out.println("beeAPI调用成功:"+respBee.getData().getMessage());
-        System.out.println("TEST");
-
         return respBee;
     }
 
