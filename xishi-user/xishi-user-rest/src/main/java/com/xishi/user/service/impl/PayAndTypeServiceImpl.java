@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -104,55 +103,68 @@ public class PayAndTypeServiceImpl extends ServiceImpl<PayAndTypeMapper, PayAndT
     public Resp beePayCallBack(PayCallBackDataInfo payCallBackDataInfo) {
         //获取bee返回交易状态 00为支付成功
         String returncode = payCallBackDataInfo.getReturncode();
-        // 支付成功
-        if (returncode.equals(00)) {
-            //流水号 支付接口生成
-            String Transaction_id = payCallBackDataInfo.getTransaction_id();
-            //订单号 xishi系统生成
-            String orderId = payCallBackDataInfo.getOrderId();
-            //根据 xishi系统生成的订单号 获取 交易记录 eb_pay_record
-            PayRecord payRecord = payRecordService.getOne(new QueryWrapper<PayRecord>().eq("order_no", orderId));
-            if (payRecord != null) {
-                payRecord.setState(1);
-                payRecord.setTradeNo(Transaction_id);
-                //更新 交易记录
-                payRecordService.updateById(payRecord);
-                Long userId = payRecord.getUserId();
-                //充值虚拟币+赠送虚拟币
-                BigDecimal add = payRecord.getGbMoney().add(payRecord.getGiftMoney());
-                //更新西施币数量 eb_user_wallet   gb_moeny
-                userWalletService.addByUserId(userId, add);
-                //新增用户钱包记录
-                UserWalletRecord userWalletRecord = new UserWalletRecord();
-                userWalletRecord.setType(0);
-                userWalletRecord.setUserId(userId);
-                userWalletRecord.setAmount(add);
-                userWalletRecord.setUseType(0);
-                userWalletRecord.setRemark("充值");
-                BigDecimal byUserId = userWalletService.findByUserId(userId);
-                userWalletRecord.setWalletAmount(byUserId);
-                userWalletRecordService.save(userWalletRecord);
-
-                //添加充值记录
-                ChargeRecord chargeRecord = new ChargeRecord();
-                //充值人民币金额
-                chargeRecord.setRmbAmount(BigDecimal.valueOf(payCallBackDataInfo.getAmount()));
-                //充值途径  1= 支付宝
-                chargeRecord.setSource(1);
-                //充值用户
-                chargeRecord.setUserId(userId);
-                //西施币数量
-                chargeRecord.setXishiAmount(add);
-                //充值后钱包余额
-                chargeRecord.setWalletAmount(byUserId);
-                //表结构里面order_num 代表 第三方流水号
-                chargeRecord.setOrderNum(Transaction_id);
-                //表结构里面xishi_order_num 代表 xishi生成的订单号
-                chargeRecord.setXishiOrderNum(orderId);
-                chargeRecordService.save(chargeRecord);
-            }
+        if (!returncode.equals("00")) {
+            return new Resp(500, "回调成功,但是返回值CODE并不为00,returncode:" + returncode);
         }
+        //返回MD5加密签名
+        /**
+        String sign = payCallBackDataInfo.getSign();
+        Map param = new HashMap();
+        param.put("memberid", payCallBackDataInfo.getMemberid());
+        param.put("orderid", payCallBackDataInfo.getOrderId());
+        param.put("amount", payCallBackDataInfo.getAmount());
+        param.put("transaction_id", payCallBackDataInfo.getTransaction_id());
+        param.put("datetime", payCallBackDataInfo.getDatetime());
+        param.put("returncode", payCallBackDataInfo.getReturncode());
+        String pay_md5sign = JzSignUtil.createMD5Sign(param);
 
-        return new Resp(0, "回调成功");
+        if (!sign.equals(pay_md5sign)) {
+            return new Resp(500, "回调成功,但是MD5加密匹配不上,sign:"+sign);
+        }**/
+
+        //根据 xishi系统生成的订单号 获取 交易记录 eb_pay_record
+        PayRecord payRecord = payRecordService.getOne(new QueryWrapper<PayRecord>().eq("order_no", payCallBackDataInfo.getOrderId()));
+        if (payRecord == null) {
+            return new Resp(500, "回调成功,但是根据订单号:" + payCallBackDataInfo.getOrderId() + "获取不到交易记录");
+        }
+        payRecord.setState(1);
+        //流水号 支付接口生成
+        payRecord.setTradeNo(payCallBackDataInfo.getTransaction_id());
+        //更新 交易记录
+        payRecordService.updateById(payRecord);
+        Long userId = payRecord.getUserId();
+        //充值虚拟币+赠送虚拟币
+        BigDecimal add = payRecord.getGbMoney().add(payRecord.getGiftMoney());
+        //更新西施币数量 eb_user_wallet   gb_moeny
+        userWalletService.addByUserId(userId, add);
+        //新增用户钱包记录
+        UserWalletRecord userWalletRecord = new UserWalletRecord();
+        userWalletRecord.setType(0);
+        userWalletRecord.setUserId(userId);
+        userWalletRecord.setAmount(add);
+        userWalletRecord.setUseType(0);
+        userWalletRecord.setRemark("充值");
+        BigDecimal byUserId = userWalletService.findByUserId(userId);
+        userWalletRecord.setWalletAmount(byUserId);
+        userWalletRecordService.save(userWalletRecord);
+
+        //添加充值记录
+        ChargeRecord chargeRecord = new ChargeRecord();
+        //充值人民币金额
+        chargeRecord.setRmbAmount(BigDecimal.valueOf(payCallBackDataInfo.getAmount()));
+        //充值途径  1= 支付宝
+        chargeRecord.setSource(1);
+        //充值用户
+        chargeRecord.setUserId(userId);
+        //西施币数量
+        chargeRecord.setXishiAmount(add);
+        //充值后钱包余额
+        chargeRecord.setWalletAmount(byUserId);
+        //表结构里面order_num 代表 第三方流水号
+        chargeRecord.setOrderNum(payCallBackDataInfo.getTransaction_id());
+        //表结构里面xishi_order_num 代表 xishi生成的订单号
+        chargeRecord.setXishiOrderNum(payCallBackDataInfo.getOrderId());
+        chargeRecordService.save(chargeRecord);
+        return new Resp(200, "回调成功,数据更新完成");
     }
 }

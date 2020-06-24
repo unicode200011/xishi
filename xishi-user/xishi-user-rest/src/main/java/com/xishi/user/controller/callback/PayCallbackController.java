@@ -3,7 +3,6 @@ package com.xishi.user.controller.callback;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.common.base.model.Req;
 import com.common.base.model.Resp;
 import com.xishi.user.config.AliPayConfig;
 import com.xishi.user.config.WxPayConfig;
@@ -18,8 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +30,7 @@ import java.util.SortedMap;
 
 @RestController
 @RequestMapping("/pay/callback")
-@Api(value="支付回调接口",description="支付回调接口")
+@Api(value = "支付回调接口", description = "支付回调接口")
 @Slf4j
 public class PayCallbackController {
 
@@ -57,21 +54,21 @@ public class PayCallbackController {
         log.info("PayCallbackController aliPayCallback params={}", JSON.toJSONString(params));
         try {
             //验签
-            boolean validate = AlipaySignature.rsaCheckV1(params, aliPayConfig.publicKey, aliPayConfig.charset,aliPayConfig.signType);
-            if(! validate) {
+            boolean validate = AlipaySignature.rsaCheckV1(params, aliPayConfig.publicKey, aliPayConfig.charset, aliPayConfig.signType);
+            if (!validate) {
                 response.getWriter().println("failure");
                 log.info("PayCallbackController aliPayCallback 支付宝回调验签失败");
                 return;
             }
             String tradeStatus = params.get("trade_status");
-            log.info("PayCallbackController aliPayCallback tradeStatus={}",tradeStatus);
-            if(StringUtils.isBlank(tradeStatus) ||  ! "TRADE_SUCCESS".equals(tradeStatus)) {
+            log.info("PayCallbackController aliPayCallback tradeStatus={}", tradeStatus);
+            if (StringUtils.isBlank(tradeStatus) || !"TRADE_SUCCESS".equals(tradeStatus)) {
                 response.getWriter().println("failure");
                 return;
             }
             Map<String, String> passbackParams = JSONObject.parseObject(params.get("passback_params"), Map.class);
             String appId = passbackParams.get("appId");
-            log.info("PayCallbackController aliPayCallback appId={}",appId);
+            log.info("PayCallbackController aliPayCallback appId={}", appId);
             // 验证appId
             if (StringUtils.isBlank(appId) || !aliPayConfig.appId.equals(appId)) {
                 response.getWriter().println("failure");
@@ -87,21 +84,21 @@ public class PayCallbackController {
             String tradeNo = params.get("trade_no");
             String buyerPayAmount = params.get("buyer_pay_amount");
 
-            PayInfo payInfo = new PayInfo(uid,0L,orderNo,payMoney,payType,tradeNo,buyerPayAmount);
+            PayInfo payInfo = new PayInfo(uid, 0L, orderNo, payMoney, payType, tradeNo, buyerPayAmount);
             realnamePayService.payDeal(payInfo);
             response.getWriter().println("success");
         } catch (Exception e) {
             try {
                 response.getWriter().println("failure");
-            }catch (Exception ea) {
+            } catch (Exception ea) {
             }
-            log.info("PayCallbackController aliPayCallback exception,支付宝回调异常",e);
+            log.info("PayCallbackController aliPayCallback exception,支付宝回调异常", e);
         }
     }
 
     @RequestMapping("/bbPayCallback")
     @ApiOperation("币宝支付回调接口")
-    public Resp bbPayCallBack(HttpServletRequest request, HttpServletResponse response){
+    public Resp bbPayCallBack(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> params = AliPay.parseAliPayNotifyParam(request);
         String s = JSONObject.toJSONString(params);
         PayCallBackDataInfo payCallBackDataInfo = JSON.parseObject(s, PayCallBackDataInfo.class);
@@ -113,19 +110,26 @@ public class PayCallbackController {
 
     /**
      * add 2020/6/20 by unicode
+     *
      * @param request
      * @param response
      * @return
      */
     @RequestMapping("/beePayCallback")
     @ApiOperation("bee支付回调接口")
-    public Resp beePayCallback(HttpServletRequest request, HttpServletResponse response){
+    public Resp beePayCallback(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> params = AliPay.parseAliPayNotifyParam(request);
         String s = JSONObject.toJSONString(params);
         PayCallBackDataInfo payCallBackDataInfo = JSON.parseObject(s, PayCallBackDataInfo.class);
         log.info("PayCallbackController bee支付回调接口 start............");
         log.info("PayCallbackController bee支付回调接口 params={}", params);
         log.info("PayCallbackController bee支付回调接口 payCallBackDataInfo={}", JSON.toJSONString(payCallBackDataInfo));
+        //如果接收到服务器点对点通讯时，在页面输出“OK”（没有双引号，OK两个字母大写）,否则会重复3次发送点对点通知.
+        try {
+            response.getWriter().println("OK");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return payAndTypeService.beePayCallBack(payCallBackDataInfo);
     }
 
@@ -169,7 +173,7 @@ public class PayCallbackController {
                     BigDecimal payMoney = BigDecimal.ZERO;
                     Integer payType = Integer.valueOf(attachMap.get("payType"));
 
-                    PayInfo payInfo = new PayInfo(uid,exchangeId,orderNo,payMoney,payType,wxTradeNo,payMoney.toString());
+                    PayInfo payInfo = new PayInfo(uid, exchangeId, orderNo, payMoney, payType, wxTradeNo, payMoney.toString());
                     realnamePayService.payDeal(payInfo);
 //                    //充值
 //                    if (payType == 0) {
@@ -185,9 +189,9 @@ public class PayCallbackController {
         } catch (Exception e) {
             try {
                 response.getWriter().println("failure");
-            }catch (Exception ea) {
+            } catch (Exception ea) {
             }
-            log.info("PayCallbackController wxPayCallback exception,微信支付回调异常",e);
+            log.info("PayCallbackController wxPayCallback exception,微信支付回调异常", e);
         }
     }
 

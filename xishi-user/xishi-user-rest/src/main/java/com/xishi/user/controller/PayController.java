@@ -1,32 +1,23 @@
 package com.xishi.user.controller;
 
 
-import com.cloud.webcore.annotation.InnerInvoke;
 import com.cloud.webcore.annotation.NeedLogin;
 import com.cloud.webcore.context.LoginContext;
 import com.cloud.webcore.model.SessionUser;
 import com.common.base.model.Req;
 import com.common.base.model.Resp;
-import com.common.base.util.TransUtil;
 import com.xishi.user.entity.req.BBPayReq;
 import com.xishi.user.entity.req.BBPaySubmitReq;
 import com.xishi.user.entity.vo.*;
-import com.xishi.user.enums.UserAuthStateEnum;
 import com.xishi.user.model.PayResponInfo;
-import com.xishi.user.model.pojo.ChargeList;
-import com.xishi.user.model.pojo.PayAndType;
-import com.xishi.user.model.pojo.User;
-import com.xishi.user.model.pojo.UserAuthInfo;
 import com.xishi.user.service.IChargeListService;
 import com.xishi.user.service.IPayAndTypeService;
 import com.xishi.user.service.IRealnamePayService;
 import com.xishi.user.service.IUserService;
-import com.xishi.user.util.AliIdentifyAuthUtil;
 import com.xishi.user.util.HttpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -139,10 +129,7 @@ public class PayController {
         data.setUserId(userId);
         String ipAddress = HttpUtils.getIpAddress(request);
         data.setIp(ipAddress);
-        Resp<PayResponInfo> respBee = chargeListService.submitBeePayWay(data);
-        respBee.setMsg("这条信息来自于代码, beeAPI调用成功,BEE的详细返回地址在.getData().getMessage()");
-        System.out.println("beeAPI调用成功:"+respBee.getData().getMessage());
-        return respBee;
+        return chargeListService.submitBeePayWay(data);
     }
 
 }

@@ -18,8 +18,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xishi.user.util.DateUtils;
 import com.xishi.user.util.HttpUtils;
 import com.xishi.user.util.JzSignUtil;
-import com.xishi.user.util.MD5;
-import com.xishi.user.util.pay.AliPay;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -187,9 +182,6 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         if (chargeList != null) {
             gbMoney = BigDecimal.valueOf(chargeList.getXishiNum());
             BigDecimal rate = chargeList.getRate();
-//            if(rate.compareTo(BigDecimal.ZERO) > 0){
-//                giftMoney = gbMoney.multiply(rate);
-//            }
         } else {
             String rate = baseMapper.findCommon();
             gbMoney = money.multiply(new BigDecimal(rate));
@@ -199,7 +191,7 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         //创建支付记录
         createPayRecord(userId, title, money, "", orderNum, payAndType.getWay(), gbMoney, giftMoney);
 
-        return this.getPayBeeResponse(payAndType, data.getIp(), orderNum, money, user.getXishiNum());
+        return this.getPayBeeResponse(payAndType, orderNum, money);
     }
 
     //创建支付记录
@@ -275,18 +267,14 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
      * bee 支付api拼装调用
      *
      * @param payAndType
-     * @param ip
      * @param orderNum
      * @param amount
-     * @param xishiNum
      * @return
      */
-    public Resp<PayResponInfo> getPayBeeResponse(PayAndType payAndType, String ip, String orderNum, BigDecimal amount, String xishiNum) {
+    public Resp<PayResponInfo> getPayBeeResponse(PayAndType payAndType, String orderNum, BigDecimal amount) {
 
-        Integer typeId = payAndType.getTypeId();
         Integer payId = payAndType.getPayId();
         Pay pay = payService.getById(payId);
-        PayType payType = payTypeService.getById(typeId);
 
         //下单参数
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置日期格式
@@ -295,40 +283,30 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         //银行编码 api提供
         String pay_bankcode = "903";
         //同步跳转页面,暂时为空
-        String pay_callbackurl = "";
+        String pay_callbackurl = "https://www.baidu.com/";
         //交易名称
         String pay_productname = "西施小额支付";
         // 组合下单参数并MD5加密
-        StringBuffer stringSignTemp = new StringBuffer();
-        stringSignTemp.append("pay_amount=").append(amount.setScale(2, BigDecimal.ROUND_DOWN) + "").append("&");
-        stringSignTemp.append("pay_applydate=").append(pay_applydate).append("&");
-        stringSignTemp.append("pay_bankcode=").append(pay_bankcode).append("&");
-        stringSignTemp.append("pay_callbackurl=").append(pay_callbackurl).append("&");
-        stringSignTemp.append("pay_memberid=").append(pay.getMerchantId()).append("&");
-        stringSignTemp.append("pay_notifyurl=").append(pay.getNotifyUrl()).append("&");
-        stringSignTemp.append("pay_orderid=").append(orderNum).append("&");
-        stringSignTemp.append("key=").append(pay.getApiKey());
-
-        String pay_md5sign = MD5.GetMD5Code(String.valueOf(stringSignTemp)).toUpperCase();
-
-        //完整下单参数
-
-        StringBuffer postParam = new StringBuffer();
-        postParam.append("pay_amount=").append(amount.setScale(2, BigDecimal.ROUND_DOWN) + "").append("&");
-        postParam.append("pay_applydate=").append(pay_applydate).append("&");
-        postParam.append("pay_bankcode=").append(pay_bankcode).append("&");
-        postParam.append("pay_callbackurl=").append(pay_callbackurl).append("&");
-        postParam.append("pay_memberid=").append(pay.getMerchantId()).append("&");
-        postParam.append("pay_notifyurl=").append(pay.getNotifyUrl()).append("&");
-        postParam.append("pay_orderid=").append(orderNum).append("&");
-        postParam.append("pay_md5sign=").append(pay_md5sign).append("&");
-        postParam.append("pay_productname=").append(pay_productname);
-        System.out.println("完整参数:" + postParam);
-
-        String respon = HttpUtils.sendPost(pay.getCreateMusterUrl(), String.valueOf(postParam));
+        Map param = new LinkedHashMap();
+        param.put("pay_amount", amount.setScale(2, BigDecimal.ROUND_DOWN) + "");
+        param.put("pay_applydate", pay_applydate);
+        param.put("pay_bankcode", pay_bankcode);
+        param.put("pay_callbackurl", pay_callbackurl);
+        param.put("pay_memberid", pay.getMerchantId());
+        param.put("pay_notifyurl", pay.getNotifyUrl());
+        param.put("pay_orderid", orderNum);
+        param.put("key", pay.getApiKey());
+        //MD5加密
+        String pay_md5sign = JzSignUtil.createMD5Sign(param);
+        param.remove("key");
+        param.put("pay_md5sign", pay_md5sign);
+        param.put("pay_productname", pay_productname);
+        //转换为STRING
+        String paramStr = DateUtils.getHttpGetParam(false, "", param);
+        //发送下单请求
+        String respon = HttpUtils.sendPost(pay.getCreateMusterUrl(), paramStr);
 
         PayResponInfo payResponInfo = new PayResponInfo();
-        payResponInfo.setCode(200);
         payResponInfo.setMessage(respon);
         System.out.println("响应respon：" + payResponInfo.getMessage());
         return Resp.successData(payResponInfo);
@@ -345,45 +323,30 @@ public class ChargeListServiceImpl extends ServiceImpl<ChargeListMapper, ChargeL
         String pay_applydate = df.format(new Date());
         String pay_bankcode = "903";
         String pay_notifyurl = "https://www.baidu.com/";
-        String pay_callbackurl = "";
+        String pay_callbackurl = "https://www.baidu.com/";
         String pay_amount = "10";
         String pay_productname = "xishi_test_pay";
         String masterUrl = "http://p.sfpay.vip/Pay_Index.html";
         String key = "gokc6fruzluful7w22ze1fewemh36yg9";
         // 组合下单参数并MD5加密
-        StringBuffer stringSignTemp = new StringBuffer();
-        stringSignTemp.append("pay_amount=").append(pay_amount).append("&");
-        stringSignTemp.append("pay_applydate=").append(pay_applydate).append("&");
-        stringSignTemp.append("pay_bankcode=").append(pay_bankcode).append("&");
-        stringSignTemp.append("pay_callbackurl=").append(pay_callbackurl).append("&");
-        stringSignTemp.append("pay_memberid=").append(pay_memberid).append("&");
-        stringSignTemp.append("pay_notifyurl=").append(pay_notifyurl).append("&");
-        stringSignTemp.append("pay_orderid=").append(pay_orderid).append("&");
-        stringSignTemp.append("key=").append(key);
 
-        System.out.println("加密前:" + stringSignTemp);
-
-        String pay_md5sign = MD5.GetMD5Code(String.valueOf(stringSignTemp)).toUpperCase();
-
-        System.out.println("加密后:" + pay_md5sign);
-
-        //完整下单参数
-        StringBuffer postParam = new StringBuffer();
-        postParam.append("pay_amount=").append(pay_amount).append("&");
-        postParam.append("pay_applydate=").append(pay_applydate).append("&");
-        postParam.append("pay_bankcode=").append(pay_bankcode).append("&");
-        postParam.append("pay_callbackurl=").append(pay_callbackurl).append("&");
-        postParam.append("pay_memberid=").append(pay_memberid).append("&");
-        postParam.append("pay_notifyurl=").append(pay_notifyurl).append("&");
-        postParam.append("pay_orderid=").append(pay_orderid).append("&");
-        postParam.append("pay_md5sign=").append(pay_md5sign).append("&");
-        postParam.append("pay_productname=").append(pay_productname);
-        System.out.println("完整参数:" + postParam);
-
-
-        String respon = HttpUtils.sendPost(masterUrl, String.valueOf(postParam));
+        Map param = new LinkedHashMap();
+        param.put("pay_amount", pay_amount);
+        param.put("pay_applydate", pay_applydate);
+        param.put("pay_bankcode", pay_bankcode);
+        param.put("pay_callbackurl", pay_callbackurl);
+        param.put("pay_memberid", pay_memberid);
+        param.put("pay_notifyurl", pay_notifyurl);
+        param.put("pay_orderid", pay_orderid);
+        param.put("key", key);
+        String pay_md5sign2 = JzSignUtil.createMD5Sign(param);
+        System.out.println(pay_md5sign2);
+        param.remove("key");
+        param.put("pay_md5sign", pay_md5sign2);
+        param.put("pay_productname", pay_productname);
+        String paramStr = DateUtils.getHttpGetParam(false, "", param);
+        String respon = HttpUtils.sendPost(masterUrl, paramStr);
         System.out.println("响应respon：" + respon);
-        PayResponInfo payResponInfo = new PayResponInfo();
     }
 
 

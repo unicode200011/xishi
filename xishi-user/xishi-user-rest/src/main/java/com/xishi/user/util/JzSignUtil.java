@@ -27,6 +27,22 @@ public class JzSignUtil {
         }
     }
 
+    public static String createMD5Sign(Map<String, String> map) {
+        try {
+            List<Map.Entry<String, String>> infoIds = new ArrayList<Map.Entry<String, String>>(map.entrySet());
+            // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+          //  sortMap(infoIds);
+            String params = getParamStr(infoIds).replaceFirst("&", "");
+            System.out.println(params);
+            String sign = "";
+            sign = MD5.GetMD5Code(params);
+            return sign.toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void sortMap(List<Map.Entry<String, String>> infoIds) {
         Collections.sort(infoIds, new Comparator<Map.Entry<String, String>>() {
             public int compare(Map.Entry<String, String> o1, Map.Entry<String, String> o2) {
@@ -41,7 +57,7 @@ public class JzSignUtil {
         for (Map.Entry<String, String> item : infoIds) {
             if (item.getKey() != null || item.getKey() != "") {
                 String key = item.getKey();
-                String val = item.getValue();
+                String val = String.valueOf(item.getValue());
                 if (!(val == "" || val == null)) {
                     sb.append("&" + key + "=" + val);
                 }
